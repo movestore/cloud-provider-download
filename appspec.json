@@ -1,4 +1,31 @@
 {
-  "settings":
-  []
+  "settings": [],
+  "license": {
+    "key": "MIT"
+  },
+  "language": "eng",
+  "keywords": [
+    "cloud",
+    "storage",
+	"download"
+  ],
+  "people": [
+    {
+      "firstName": "Clemens",
+      "middleInitials": null,
+      "lastName": "Hahn",
+      "email": "clemens@couchbits.com",
+      "roles": [
+        "author",
+        "creator",
+		"maintainer"
+      ],
+      "orcid": null,
+      "affiliation": "couchbits GmbH",
+      "affiliationRor": null
+    }
+  ],
+  "documentation": {
+    "url": "https://github.com/movestore/cloud-provider-download/blob/master/README.md"
+  }
 }

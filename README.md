@@ -9,7 +9,7 @@ Download Movement data from your Dropbox or Google Drive Cloud Folder.
 ## Documentation
 This App accesses your Dropbox or Google Drive Folder that your MoveApps account is connected with and allow the download of an .rds Movement data file.
 
-MORE DETAILS?
+This App has the sole purpose of providing the file as input to the workflow.
 
 ### Input data
 none
@@ -24,4 +24,4 @@ none
 none
 
 ### Null or error handling:
-**Data:** WHAT HAPPENS IF THE FILE IS NOT CORRECT? (wrong format or wrong content or null content...)
+**Data:** The selected file must be of the `RDS` / `movement` type. It must be able to be interpreted by the R library move (by `readRDS(file = $SELECTED_FILE)`).

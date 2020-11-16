@@ -11,6 +11,13 @@
     "google drive",
     "dropbox"
   ],
+  "dependencies": {
+    "R": [
+      {
+        "name": "move"
+      }
+    ]
+  },
   "people": [
     {
       "firstName": "Clemens",

@@ -7,22 +7,21 @@
   "keywords": [
     "cloud",
     "storage",
-	"download"
+    "download",
+    "google drive",
+    "dropbox"
   ],
   "people": [
     {
       "firstName": "Clemens",
-      "middleInitials": null,
       "lastName": "Hahn",
       "email": "clemens@couchbits.com",
       "roles": [
         "author",
         "creator",
-		"maintainer"
+	"maintainer"
       ],
-      "orcid": null,
-      "affiliation": "couchbits GmbH",
-      "affiliationRor": null
+      "affiliation": "couchbits GmbH"
     }
   ],
   "documentation": {

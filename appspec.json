@@ -25,8 +25,7 @@
       "email": "clemens@couchbits.com",
       "roles": [
         "author",
-        "creator",
-	"maintainer"
+        "creator"
       ],
       "affiliation": "couchbits GmbH"
     }

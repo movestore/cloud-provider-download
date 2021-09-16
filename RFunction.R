@@ -1,9 +1,9 @@
 rFunction = function(settings=NULL,file=NULL,folder=NULL,fileId=NULL,data=NULL) {
   if (! is.null(fileId)) {
-    cat("This data-source will use the configured file", fileId, ".\n")
+    logger.info(paste("Downloaded file '", fileId, "' from cloud provider.", sep = ""))
   }
   if (! is.null(data)) {
-    cat("File from cloud provider received.\n")
+    logger.info("Successfully got data from cloud provider.")
   }
   data
 }

@@ -16,7 +16,7 @@ readLocalFile <- function(sourceFile) {
       },
       error = function(readCsvError) {
         # collect errors for report and throw custom error
-        stop(paste(readRdsError, readCsvError, sep = " & "))
+        stop(paste(sourceFile, " -> readRDS(sourceFile): ", readRdsError, "move(sourceFile): ", readCsvError, sep = ""))
       })
     })
   } else {

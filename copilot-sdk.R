@@ -3,8 +3,8 @@ library(move)
 source("logger.R")
 source("RFunction.R")
 
-inputFromPrevApp = "input3.rds"
-cloudFileName = "input.csv"
+inputFromPrevApp = NULL #"input2.rds"
+cloudFileName = "input2.csv"
 cloudFileLocalFolder = "."
 outputFileName = "output.rds"
 

@@ -3,7 +3,9 @@ library(move)
 source("logger.R")
 source("RFunction.R")
 
-inputFileName = "input.csv"
+inputFromPrevApp = NULL #"input2.rds"
+cloudFileName = "input2.csv"
+cloudFileLocalFolder = "."
 outputFileName = "output.rds"
 
 args <- list()
@@ -19,37 +21,14 @@ args <- list()
 #    args[["password"]] = "any-password"
 
 # Add your arguments of your r function here
-args[["fileId"]] = inputFileName
+args[["fileId"]] = "some-id"
+args[["fileName"]] = cloudFileName
+args[["cloudFileLocalFolder"]] = cloudFileLocalFolder
 
 #################################################################
 #################################################################
 
-readInput <- function(sourceFile) {
-  input <- NULL
-  if(!is.null(sourceFile) && sourceFile != "") {
-    logger.debug("Loading file from %s", sourceFile)
-    input <- tryCatch({
-      # 1: try to read input as move RDS file
-      readRDS(file = sourceFile)
-    },
-    error = function(readRdsError) {
-      tryCatch({
-        # 2 (fallback): try to read input as move CSV file
-        move(sourceFile, removeDuplicatedTimestamps=TRUE)
-      },
-      error = function(readCsvError) {
-        # collect errors for report and throw custom error
-        stop(paste(readRdsError, readCsvError, sep = " & "))
-      })
-    })
-  } else {
-    logger.debug("Skip loading: no source File")
-  }
-  
-  input
-}
-
-inputData <- readInput(inputFileName)
+inputData <- readInput(inputFromPrevApp)
 # Add the data parameter if input data is available
 if (!is.null(inputData)) {
   args[["data"]] <- inputData

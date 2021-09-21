@@ -1,10 +1,9 @@
 library(jsonlite)
 library(move)
 source("logger.R")
-source("Helper.R")
 source("RFunction.R")
 
-inputFromPrevApp = "input4.rds"
+inputFromPrevApp = "input3.rds"
 cloudFileName = "input.csv"
 cloudFileLocalFolder = "."
 outputFileName = "output.rds"

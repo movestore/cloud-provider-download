@@ -1,4 +1,30 @@
-source("Helper.R")
+# for loading move CSV files
+library(move)
+
+readLocalFile <- function(sourceFile) {
+  input <- NULL
+  if(!is.null(sourceFile) && sourceFile != "") {
+    logger.debug("Loading file from %s", sourceFile)
+    input <- tryCatch({
+      # 1: try to read input as move RDS file
+      readRDS(file = sourceFile)
+    },
+    error = function(readRdsError) {
+      tryCatch({
+        # 2 (fallback): try to read input as move CSV file
+        move(sourceFile, removeDuplicatedTimestamps=TRUE)
+      },
+      error = function(readCsvError) {
+        # collect errors for report and throw custom error
+        stop(paste(readRdsError, readCsvError, sep = " & "))
+      })
+    })
+  } else {
+    logger.debug(paset("Skip loading: local file not provided: '", sourceFile, "'", sep = ""))
+  }
+  
+  input
+}
 
 rFunction = function(
     settings=NULL,                # MoveApps settings (unused)
@@ -17,14 +43,16 @@ rFunction = function(
   cloudSource <- NULL
   result <- NULL
   if (! is.null(fileName)) {
-    cloudSource <- readInput(paste(cloudFileLocalFolder,"/",fileName,sep = ""))
+    cloudSource <- readLocalFile(paste(cloudFileLocalFolder,"/",fileName,sep = ""))
     result <- cloudSource
     logger.info("Successfully read file from cloud provider (locally).")
   }
   if (exists("data") && !is.null(data)) {
-    logger.info("Merging input and cloud download together")
+    logger.info("Merging input from prev. app and cloud file together.")
     result <- moveStack(cloudSource, data)
+  } else {
+    logger.info("No input from prev. app provided, nothing to merge. Will deliver the mapped cloud-file only.")
   }
-  logger.info("Done.")
+  logger.info("I'm done.")
   result
 }

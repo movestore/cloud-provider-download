@@ -1,5 +1,6 @@
 # for loading move CSV files
 library(move)
+Sys.setenv(tz="UTC") #fix, so that time zones of rds files will be transformed into UTC
 
 readLocalFile <- function(sourceFile) {
   input <- NULL
@@ -12,7 +13,7 @@ readLocalFile <- function(sourceFile) {
     error = function(readRdsError) {
       tryCatch({
         # 2 (fallback): try to read input as move CSV file
-        move(sourceFile, removeDuplicatedTimestamps=TRUE)
+        move(sourceFile, removeDuplicatedTimestamps=TRUE) #automatically makes UTC timestamps
       },
       error = function(readCsvError) {
         # collect errors for report and throw custom error

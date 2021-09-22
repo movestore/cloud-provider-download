@@ -49,7 +49,7 @@ rFunction = function(
   }
   if (exists("data") && !is.null(data)) {
     logger.info("Merging input from prev. app and cloud file together.")
-    result <- moveStack(cloudSource, data)
+    result <- moveStack(cloudSource, data,forceTz="UTC")
   } else {
     logger.info("No input from prev. app provided, nothing to merge. Will deliver the mapped cloud-file only.")
   }

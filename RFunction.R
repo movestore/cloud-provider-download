@@ -1,6 +1,5 @@
 # for loading move CSV files
 library(move)
-Sys.setenv(tz="UTC") #fix, so that time zones will be transformed into UTC (input RDS files (or data from prev app) with tz=NULL are forced to UTC)
 
 readLocalFile <- function(sourceFile) {
   input <- NULL
@@ -38,11 +37,15 @@ rFunction = function(
     cloudFileLocalFolder="/tmp",  # local directory of cloud-file
     data=NULL                     # The data of the prev. apps in the workflow
 ) {
+  Sys.setenv(tz="UTC") #fix, so that time zones will be transformed into UTC (input RDS files (or data from prev app) with tz=NULL are forced to UTC)
+  
   if (! is.null(fileId)) {
     logger.info(paste("Downloaded file '", fileId, "' from cloud provider.", sep = ""))
   }
+  
   cloudSource <- NULL
   result <- NULL
+  
   if (! is.null(fileName)) {
     cloudSource <- readLocalFile(paste(cloudFileLocalFolder,"/",fileName,sep = ""))
     logger.info(paste0("Data from Cloud have time zone: ",attr(timestamps(cloudSource),'tzone')))
@@ -50,6 +53,7 @@ rFunction = function(
     result <- cloudSource
     logger.info("Successfully read file from cloud provider (locally).")
   }
+  
   if (exists("data") && !is.null(data)) {
     logger.info("Merging input from prev. app and cloud file together.")
     logger.info(paste0("Data from prev App have time zone: ",attr(timestamps(data),'tzone')))
@@ -61,6 +65,7 @@ rFunction = function(
   } else {
     logger.info("No input from prev. app provided, nothing to merge. Will deliver the mapped cloud-file only.")
   }
+  
   logger.info("I'm done.")
   result
 }

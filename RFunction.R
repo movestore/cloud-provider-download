@@ -45,14 +45,17 @@ rFunction = function(
   result <- NULL
   if (! is.null(fileName)) {
     cloudSource <- readLocalFile(paste(cloudFileLocalFolder,"/",fileName,sep = ""))
-    if (is.null(attr(timestamps(cloudSource),'tzone'))) attr(timestamps(cloudSource),'tzone') <- "UTC" else logger.info(paste0("Data from Cloud have time zone: ",attr(timestamps(cloudSource),'tzone'))) #maybe too much of a hack (?)
+    logger.info(paste0("Data from Cloud have time zone: ",attr(timestamps(cloudSource),'tzone')))
+    if (is.null(attr(timestamps(cloudSource),'tzone'))) attr(timestamps(cloudSource),'tzone') <- "UTC" #maybe too much of a hack (?)
     result <- cloudSource
     logger.info("Successfully read file from cloud provider (locally).")
   }
   if (exists("data") && !is.null(data)) {
     logger.info("Merging input from prev. app and cloud file together.")
-    if (is.null(attr(timestamps(data),'tzone'))) attr(timestamps(data),'tzone') <- "UTC" else logger.info(paste0("Data from prev App have time zone: ",attr(timestamps(data),'tzone'))) #maybe too much of a hack (?)
-    if (is.null(attr(timestamps(cloudSource),'tzone'))) attr(timestamps(cloudSource),'tzone') <- "UTC" else logger.info(paste0("Data from Cloud have time zone: ",attr(timestamps(cloudSource),'tzone'))) #maybe too much of a hack (?)
+    logger.info(paste0("Data from prev App have time zone: ",attr(timestamps(data),'tzone')))
+    if (is.null(attr(timestamps(data),'tzone'))) attr(timestamps(data),'tzone') <- "UTC" #maybe too much of a hack (?)
+    logger.info(paste0("Data from Cloud have time zone: ",attr(timestamps(cloudSource),'tzone')))
+    if (is.null(attr(timestamps(cloudSource),'tzone'))) attr(timestamps(cloudSource),'tzone') <- "UTC" #maybe too much of a hack (?)
     result <- moveStack(cloudSource, data,forceTz="UTC")
     
   } else {

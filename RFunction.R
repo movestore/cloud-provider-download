@@ -1,5 +1,5 @@
 # for loading move CSV files
-library(move)
+library('move')
 
 readLocalFile <- function(sourceFile) {
   input <- NULL
@@ -12,7 +12,10 @@ readLocalFile <- function(sourceFile) {
     error = function(readRdsError) {
       tryCatch({
         # 2 (fallback): try to read input as move CSV file
-        move(sourceFile, removeDuplicatedTimestamps=TRUE) #automatically makes UTC timestamps
+        x <- move(sourceFile, removeDuplicatedTimestamps=TRUE) #automatically makes UTC timestamps
+        y <- as.data.frame(x)
+        x@data <- cbind(x@data,y[!(names(y) %in% names(x@data))])
+        return(x)
       },
       error = function(readCsvError) {
         # collect errors for report and throw custom error

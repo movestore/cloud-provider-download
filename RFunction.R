@@ -12,10 +12,7 @@ readLocalFile <- function(sourceFile) {
     error = function(readRdsError) {
       tryCatch({
         # 2 (fallback): try to read input as move CSV file
-        x <- move(sourceFile, removeDuplicatedTimestamps=TRUE) #automatically makes UTC timestamps
-        y <- as.data.frame(x)
-        x@data <- cbind(x@data,y[!(names(y) %in% names(x@data))])
-        return(x)
+        move(sourceFile, removeDuplicatedTimestamps=TRUE) #automatically makes UTC timestamps
       },
       error = function(readCsvError) {
         # collect errors for report and throw custom error

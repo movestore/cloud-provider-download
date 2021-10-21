@@ -29,6 +29,19 @@
         "creator"
       ],
       "affiliation": "couchbits GmbH"
+    },
+    {
+     "firstName": "Andrea",
+      "middleInitials": null,
+      "lastName": "Kölzsch",
+      "email": "akoelzsch@ab.mpg.de",
+      "roles": [
+        "author",
+        "contributor"
+      ],
+      "orcid": "0000-0003-0193-1563",
+      "affiliation": "Max-Planck-Institute of Animal Behavior",
+      "affiliationRor": "https://ror.org/026stee22"
     }
   ],
   "documentation": {

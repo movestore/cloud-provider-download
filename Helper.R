@@ -5,6 +5,8 @@
 # for loading move CSV files
 library(move)
 
+Sys.setenv(tz="UTC")
+
 readInput <- function(sourceFile) {
   input <- NULL
   if(!is.null(sourceFile) && sourceFile != "") {
@@ -21,7 +23,11 @@ readInput <- function(sourceFile) {
       error = function(readRdsError) {
         tryCatch({
           # 2 (fallback): try to read input as move CSV file
-          move(sourceFile, removeDuplicatedTimestamps=TRUE)
+          # first clean order of file as move() needs it, just to prevent some errors
+          csvSource <- read.csv(sourceFile,header=TRUE)
+          o <- order(csvSource$individual.local.identifier,as.POSIXct(csvSource$timestamp))
+          move(csvSource[o,], removeDuplicatedTimestamps=TRUE)
+          
         },
         error = function(readCsvError) {
           # collect errors for report and throw custom error

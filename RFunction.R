@@ -23,8 +23,25 @@ rFunction = function(
   cloudSource <- NULL
   result <- NULL
   
-  if (! is.null(fileName)) {
-    cloudSource <- readInput(paste(cloudFileLocalFolder,"/",fileName,sep = ""))
+  if (! is.null(fileName)) {   
+       cloudSource <- tryCatch({
+        # 1: try to read input as (any) RDS file
+        readInput(paste(cloudFileLocalFolder,"/",fileName,sep = ""))
+      },
+      error = function(readRdsError) {
+        tryCatch({
+          # 2 (fallback): try to read input as move CSV file
+          # first clean order of file as move() needs it, just to prevent some errors
+          csvSource <- read.csv(sourceFile,header=TRUE)
+          o <- order(csvSource$individual.local.identifier,as.POSIXct(csvSource$timestamp))
+          move(csvSource[o,], removeDuplicatedTimestamps=TRUE)
+        },
+        error = function(readCsvError) {
+          # collect errors for report and throw custom error
+          stop(paste(sourceFile, " -> readRDS(sourceFile): ", readRdsError, "move(sourceFile): ", readCsvError, sep = ""))
+        })
+      })      
+      
     logger.info(paste0("Data from Cloud have time zone: ",attr(timestamps(cloudSource),'tzone')))
     if (is.null(attr(timestamps(cloudSource),'tzone'))) attr(timestamps(cloudSource),'tzone') <- "UTC" #maybe too much of a hack (?)
     result <- cloudSource

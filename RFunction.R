@@ -60,6 +60,11 @@ rFunction = function(
     logger.info("No input from prev. app provided, nothing to merge. Will deliver the mapped cloud-file only.")
   }
   
+  # Fallback to make sure it is always a moveStack object and not a move object.
+  if (is(result,'Move')) {
+    result <- moveStack(result,forceTz="UTC")
+  }
+  
   logger.info("I'm done.")
   result
 }

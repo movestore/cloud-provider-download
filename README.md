@@ -1,4 +1,4 @@
-# Cloud Storage
+# Upload File from Cloud Storage
 MoveApps
 
 GitHub repository: *github.com/movestore/cloud-provider-download*
@@ -22,7 +22,7 @@ moveStack in Movebank format csv (merged with input if necessary)
 ### Artefacts
 none
 
-### Parameters 
+### Settings
 The name of the file in the context of the selected Cloud Storage.
 
 ### Null or error handling:

@@ -3,8 +3,8 @@ library(move)
 source("logger.R")
 source("RFunction.R")
 
-inputFromPrevApp = NULL #"input2.rds"
-cloudFileName = "input2.csv"
+inputFromPrevApp = NULL #readRDS("Zambia_Vulture_Clusters_ER__Movebank__2022-12-12_07-46-44_VicFalls.rds") #NULL
+cloudFileName = "SAundSU3.csv" #"input_data_withWind.csv" #"nest_table_stork_SWGermany.csv"
 cloudFileLocalFolder = "."
 outputFileName = "output.rds"
 
@@ -28,7 +28,8 @@ args[["cloudFileLocalFolder"]] = cloudFileLocalFolder
 #################################################################
 #################################################################
 
-inputData <- readInput(inputFromPrevApp)
+#inputData <- readInput(inputFromPrevApp)
+inputData <- inputFromPrevApp
 # Add the data parameter if input data is available
 if (!is.null(inputData)) {
   args[["data"]] <- inputData

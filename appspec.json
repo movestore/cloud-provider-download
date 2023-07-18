@@ -10,12 +10,16 @@
     "download",
     "google drive",
     "dropbox",
-    "move merge"
+    "move merge",
+	"move2"
   ],
   "dependencies": {
     "R": [
       {
         "name": "move"
+      },
+      {
+        "name": "move2"
       }
     ]
   },

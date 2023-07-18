@@ -1,14 +1,34 @@
-FROM registry.gitlab.com/couchbits/movestore/movestore-groundcontrol/co-pilot-v1-r:2494
+########################################################################################################################
+# MoveApps R SDK
+########################################################################################################################
 
-# install system dependencies required by this app
-# no-op
+FROM rocker/geospatial:4.3.1
 
-WORKDIR /root/app
+LABEL maintainer = "couchbits GmbH <us@couchbits.com>"
 
-# install the R dependencies this app needs
-RUN Rscript -e 'remotes::install_version("move")'
-RUN Rscript -e 'packrat::snapshot()'
+# Security Aspects
+# group `staff` b/c of:
+# When running rocker with a non-root user the docker user is still able to install packages.
+# The user docker is member of the group staff and could write to /usr/local/lib/R/site-library.
+# https://github.com/rocker-org/rocker/wiki/managing-users-in-docker
+RUN useradd --create-home --shell /bin/bash moveapps --groups staff
+USER moveapps:staff
 
-# copy the app as late as possible
-# therefore following builds can use the docker cache of the R dependency installations
-COPY RFunction.R .
+WORKDIR /home/moveapps/co-pilot-r
+
+# renv
+ENV RENV_VERSION 0.16.0
+RUN R -e "install.packages('remotes', repos = c(CRAN = 'https://cloud.r-project.org'))"
+RUN R -e "remotes::install_github('rstudio/renv@${RENV_VERSION}')"
+
+# copy the SDK
+COPY --chown=moveapps:staff src/ ./src/
+COPY --chown=moveapps:staff data/ ./data/
+COPY --chown=moveapps:staff sdk.R RFunction.R .env app-configuration.json start-process.sh ./
+
+# restore the current snapshot
+COPY --chown=moveapps:staff renv.lock .Rprofile ./
+COPY --chown=moveapps:staff renv/activate.R renv/settings.dcf ./renv/
+RUN R -e 'renv::restore()'
+
+ENTRYPOINT ["/bin/bash"]

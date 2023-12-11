@@ -1,6 +1,6 @@
 {
     "fileId": "some-id",
-    "fileName": "data2_move2.rds",
+    "fileName": "data2.csv",
     "time_col":"timestamp",
     "track_id_col":"individual.local.identifier", 
     "track_attr":"",

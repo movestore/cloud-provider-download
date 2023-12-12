@@ -6,6 +6,7 @@
 
 library(move2)
 library(move)
+library(units)
 # for reading files from disk
 source("./src/io/rds.R")
 
@@ -163,7 +164,24 @@ rFunction = function(
   
   if (exists("data") && !is.null(data)) {
     logger.info("Merging input from previous App and cloud file together.")
-    result <- mt_stack(result, data, .track_combine="rename",.track_id_repair="universal") #how is it with the timezones in this function? Do we have to force a fix here, again?
+    
+    #drop units from intersecting columns that are not defined as time/loc/track_ID
+    defd <- c(time_col,track_id_col,trimws(strsplit(as.character(coords),",")[[1]]),"geometry")
+    overlp <- intersect(names(result), names(data))
+    drp <- overlp[!is.element(overlp,defd)]
+    if (length(drp>0)) 
+    {
+      for (i in seq(along=drp)) 
+      {
+        dataunit <- eval(parse(text=paste("class(data$",drp[i],")=='units'",sep="")))
+        resultunit <- eval(parse(text=paste("class(result$",drp[i],")=='units'",sep="")))
+        
+        if (dataunit & !resultunit) eval(parse(text=paste("data$",drp[i],"<- drop_units(data$",drp[i],")",sep=""))) #if only the variable in data has units, drop them
+        if (resultunit & !dataunit) eval(parse(text=paste("result$",drp[i],"<- drop_units(result$",drp[i],")",sep=""))) #if only the variable in result has units, drop them
+      }
+    }
+    
+    result <- mt_stack(result, data, .track_combine="rename",.track_id_repair="universal")
     
   } else {
     logger.info("No input from previous App provided, nothing to merge. Will deliver the mapped cloud-file only.")

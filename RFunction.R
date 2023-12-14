@@ -166,7 +166,7 @@ rFunction = function(
     logger.info("Merging input from previous App and cloud file together.")
     
     #drop units from intersecting columns that are not defined as time/loc/track_ID
-    defd <- c(time_col,track_id_col,trimws(strsplit(as.character(coords),",")[[1]]),"geometry")
+    defd <- c(time_col,track_id_col,trimws(strsplit(as.character(coords),",")[[1]]),attr(data, "sf_column"))
     overlp <- intersect(names(result), names(data))
     drp <- overlp[!is.element(overlp,defd)]
     if (length(drp>0)) 

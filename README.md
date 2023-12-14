@@ -5,55 +5,49 @@ GitHub repository: *github.com/movestore/cloud-provider-download*
 
 ## Description
 
-Insert movement data from your Dropbox or Google Drive cloud folder into the Workflow. Movement data can be a moveStack or a .csv data frame with required formats and names (see Documentation).
+Insert movement data from your Dropbox or Google Drive cloud folder into the Workflow. Movement data can be a moveStack, move2 location object or a .csv data frame with specified object identifiers (see Documentation).
 
 ## Documentation
-This App allows you to connect your MoveApps account with your Dropbox or Google Drive folder and access movement data stored as an `.rds` or `.csv` file to use as input to a Workflow. Note that the .rds file must contain a moveStack object as specified in the [move2 R package](https://cran.r-project.org/web/packages/move2/index.html). The .csv file must contain the following six columns, with the exact names and formats, generally following the Movebank format:  
-* [individual.local.identifier](http://vocab.nerc.ac.uk/collection/MVB/current/MVB000016/) (character)
-* [location.long](http://vocab.nerc.ac.uk/collection/MVB/current/MVB000146/) (decimal number indicating decimal degrees projected in the WGS84 reference system, using range -180 to 180)
-* [location.lat](http://vocab.nerc.ac.uk/collection/MVB/current/MVB000145/) (decimal number indicating decimal degrees projected in the WGS84 reference system)
-* [timestamp](http://vocab.nerc.ac.uk/collection/MVB/current/MVB000200/) (yyyy-MM-dd HH:mm:ss.SSS in UTC)
-* [individual.taxon.canonical.name](http://vocab.nerc.ac.uk/collection/MVB/current/MVB000024/) (Latin name of your species)
-* [sensor.type](http://vocab.nerc.ac.uk/collection/MVB/current/MVB000170/) (e.g., gps)
+This App allows you to access movement data stored as an `.rds` or `.csv` file from your Dropbox or Google Drive folder that has been connected with your MoveApps account, to use as input to a Workflow. Note that the .rds file must contain a moveStack object (deprecated) or a move2 location object as specified in the [move2 R package](https://cran.r-project.org/web/packages/move2/index.html). The .csv file must contain the following four identifiers the names of which have to be specified in the Settings (see below). We recommend to follow the Movebank format:  
 
-For data to be read properly, please note the following additional requirements:  
-* Missing values (NA) are not allowed, especially for locations and timestamps. 
-* Timestamps must be ordered by individual.
-* Duplicate records for the same individual and timestamp are not permitted. 
+* [timestamp](http://vocab.nerc.ac.uk/collection/MVB/current/MVB000200/) (yyyy-MM-dd HH:mm:ss.SSS in UTC)
+
+* [individual-local-identifier](http://vocab.nerc.ac.uk/collection/MVB/current/MVB000016/) (character)
+
+* [location-long](http://vocab.nerc.ac.uk/collection/MVB/current/MVB000146/) (decimal number indicating decimal degrees projected in the WGS84 reference system, using range -180 to 180)
+* [location-lat](http://vocab.nerc.ac.uk/collection/MVB/current/MVB000145/) (decimal number indicating decimal degrees projected in the WGS84 reference system)
+
+Check Movebank for [further possible attributes and their descriptions](http://vocab.nerc.ac.uk/collection/MVB/current/).
+
+For data to be read properly, please note the following additional recommendations:  
+* Missing values (NA) are not allowed, especially for locations and timestamps. If there are any, the respective event is removed by the App. 
+* Timestamps must be ordered by individual. They will be reordered by the App, if not.
+* Duplicate records for the same individual and timestamp are not permitted. They will be automatically removed by the App. 
 * Additional columns are possible. For example, you can use this App to directly read files annotated with environmental information using the [EnvDATA System](https://www.movebank.org/cms/movebank-content/env-data) in Movebank.
 
-To analyze data from multiple sources, this App can be inserted multiple times into a single Workflow or used in combination with the [Movebank App](https://www.moveapps.org/apps/browser/8eeafaad-410e-440b-a105-94f6ff4109d8) to access data from Movebank.
-=======
-Insert Movement data from your Dropbox or Google Drive Cloud Folder into the Workflow. Movement data can either be a moveStack, move2_loc object or a .csv data frame with required formats and names (see Documentation).
-
-## Documentation
-This App accesses your Dropbox or Google Drive Folder that your MoveApps account is connected with and allows the download of an `.rds` or `.csv` Movement data file. Note that the .rds file must contain either a moveStack object as specified in the R-move package (to be deprecated at some point) or a move2 object as specified in the move2 R-package. The .csv file needs to have the following four columns, the names of which can vary if specified in the settings below. However, formats must be as specified here: individual-local-identifier (character), location-long (decimal number), locaton-lat (decimal number), timestamp (yyyy-mm-dd hh:mm:ss.sss). Missing values (NA) are not allowed, especially for locations and timestamps. Timestamps have to be ordered by individual, and duplicates are not permitted, if there are any they will be removed (keepting the first occurance). Additional columns are possible and often helpful for uploading e.g. annotated tracks.
-
-It is possible to directly read in tracks that have been annotated with environmental data by the EnvDATA service of Movebank.
-
-This App has the purpose of providing a file as input to the workflow. The App can be inserted multiple times into a single workflow - this way you can insert more than one file from the cloud and even merge cloud-files by other data-source-files (like e.g. Movebank).
+To analyze data from multiple sources, this App can be inserted multiple times into a single Workflow or used in combination with the [Movebank Location App](https://www.moveapps.org/apps/browser/267eb5a9-41a8-4d1c-ad68-52769eac72a5) to access data from Movebank.
 
 ### Input data
 none, moveStack or move2_loc object
 
 ### Output data
-move2_loc object (uploaded file merged with input if available)
+move2_loc object (uploaded file merged with App input if available)
 
 ### Artefacts
 none
 
 ### Settings
-The name of the file in the selected cloud storage folder.
+1. The name of the file in the selected cloud storage folder.
 
-`Name of the time column` (time_col): Column to use as the timestamp column for the transformation of the table data to a move2 object. The expected timestamp format is 'yyyy-mm-dd HH:MM:SS' and in UTC timezone. Default "timestamp".
+2. `Name of the time column` (time_col): Column to use as the timestamp column for the transformation of the table data to a move2 object. The expected timestamp format is 'yyyy-mm-dd HH:MM:SS' and in UTC timezone. Default "timestamp".
 
-`Name of the track ID column` (track_id_col): Column to use as the track ID column for transformation of the data table to a move2 object. Beware of possible issues if you have reused tags on different animals or used several tags on the same animal. If this is the case, create a column before uploading the data with a unique identifier for each animal and tag combination, e.g. by creating a 'animalName_TagID' column. Default "individual-local-identifier".
+3. `Name of the track ID column` (track_id_col): Column to use as the track ID column for transformation of the data table to a move2 object. Beware of possible issues if you have reused tags on different animals or used several tags on the same animal. If this is the case, create a column before uploading the data with a unique identifier for each animal and tag combination, e.g. by creating a 'animalName_TagID' column. Default "individual-local-identifier".
 
-`Name of the attributes to become track attributes` (track_attr): List of attributes that are pure track attributes, i.e. have only one value per track. This will make working with the data easier in subsequent Apps. The names must be separated with comma. Default is the empty string "", i.e. no tack attributes.
+4. `Name of the attributes to become track attributes` (track_attr): List of attributes that are pure track attributes, i.e. have only one value per track. This will make working with the data easier in subsequent Apps. The names must be separated with comma. Default is the empty string "", i.e. no tack attributes.
 
-`Names of the longitude and latitute columns` (coords): Names of the two (or three) coordinate columns in your data for correct transformation to a move2 object. The order must be x/longitude followed by y/latitute and optionally z/height. The names must be separated with comma. Default: "location-long, location-lat".
+5. `Names of the longitude and latitute columns` (coords): Names of the two (or three) coordinate columns in your data for correct transformation to a move2 object. The order must be x/longitude followed by y/latitute and optionally z/height. The names must be separated with comma. Default: "location-long, location-lat".
 
-`Coordinate reference system` (crss): Coordinate reference system/ projection to useas a valid numeric EPSG value. For more info see https://epsg.io/ and https://spatialreference.org/. Default 4326 (EPSG:4326, standard longitude/latitude)
+6. `Coordinate reference system` (crss): Coordinate reference system/ projection to useas a valid numeric EPSG value. For more info see https://epsg.io/ and https://spatialreference.org/. Default 4326 (EPSG:4326, standard longitude/latitude)
 
 ### Most common errors
 What uploading a csv file, make sure that the timestamps are in the correct format, openening it in a text reader (not Excel!) helps to check for it.
@@ -67,4 +61,4 @@ What uploading a csv file, make sure that the timestamps are in the correct form
 Note that this update might affect Google Drive users, as well. For those, however, a re-selection of the folders and file is sufficient. Reconnection is not necessary.
 
 ### Null or error handling:
-**File:** The selected file must be of the `RDS` or `CSV` file type. The rds must be able to be interpreted by the R library move as moveStack or move2 as move2 object. CSV files require the above listed attributes/columns with exact names and format.
+**File:** The selected file must be of the `.rds` or `.csv` file type. The `.rds` must be able to be interpreted by the R library move as moveStack or move2 as move2 object. `.csv` files require the in the Settings specified attributes/columns with exact names and standard format (YYYY-MM-DD HH:MM:SS.SSS for timestamp).

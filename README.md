@@ -44,6 +44,7 @@ What uploading a csv file, make sure that the timestamps are in the correct form
 3.           Click “DISCONNECT” and confirm
 4.           Then click “CONNECT” (which has appeared on the Dropbox card after disconnecting) and confirm
 5.           Login to the respective Dropbox account and authorize MoveApps there
+Note that this update might affect Google Drive users, as well. For those, however, a re-selection of the folders and file is sufficient. Reconnection is not necessary.
 
 ### Null or error handling:
 **File:** The selected file must be of the `RDS` or `CSV` file type. The rds must be able to be interpreted by the R library move as moveStack or move2 as move2 object. CSV files require the above listed attributes/columns with exact names and format.

@@ -1,0 +1,4 @@
+individual.local.identifier,location.long,location.lat,timestamp,individual.taxon.canonical.name,sensor.type
+remove,31.1391611,-6.640891197,2021-07-01 12:00:01,Gyps africanus,gps
+remove,37.71897665,-7.804262757,2021-07-01 12:00:02,Gyps africanus,gps
+remove,34.69100486,-7.435,2021-07-01 12:00:03,Gyps africanus,gps

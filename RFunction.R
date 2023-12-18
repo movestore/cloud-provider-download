@@ -176,8 +176,16 @@ rFunction = function(
         dataunit <- eval(parse(text=paste("class(data$",drp[i],")=='units'",sep="")))
         resultunit <- eval(parse(text=paste("class(result$",drp[i],")=='units'",sep="")))
         
-        if (dataunit & !resultunit) eval(parse(text=paste("data$",drp[i],"<- drop_units(data$",drp[i],")",sep=""))) #if only the variable in data has units, drop them
-        if (resultunit & !dataunit) eval(parse(text=paste("result$",drp[i],"<- drop_units(result$",drp[i],")",sep=""))) #if only the variable in result has units, drop them
+        if (dataunit & !resultunit) 
+        {
+          eval(parse(text=paste("data$",drp[i],"<- drop_units(data$",drp[i],")",sep=""))) #if only the variable in data has units, drop them
+          logger.info(paste("Your uploaded file does not contain units for the attribute",drp[i],". Make sure that its units are the same in both data sets. The units will be dropped for further analysis steps."))
+        }
+        if (resultunit & !dataunit) 
+        {
+          eval(parse(text=paste("result$",drp[i],"<- drop_units(result$",drp[i],")",sep=""))) #if only the variable in result has units, drop them
+          logger.info(paste("Your App input data set does not contain units for the attribute",drp[i],". Make sure that its units are the same in both data sets. The units will be dropped for further analysis steps."))
+        }
       }
     }
     

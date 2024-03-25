@@ -5,6 +5,7 @@
 
 ########
 ## ToDo: make section "joining objects" ~L271 to end equal to the same section in local-upload-app
+## ToDo: find correct way of doing this: names(new1) <- make.names(names(new1),allow_=TRUE)
 ########
 
 library('move2')
@@ -111,7 +112,7 @@ rFunction = function(
       }
       # make names for new1
       if(!is.null(new1)){
-        names(new1) <- make.names(names(new1),allow_=TRUE)
+        # names(new1) <- make.names(names(new1),allow_=TRUE)
         mt_track_id(new1) <- make.names(mt_track_id(new1),allow_=TRUE)
       }
       cloudSource <- new1
@@ -201,7 +202,7 @@ rFunction = function(
           }
           
           # make names for new2
-          names(new2) <- make.names(names(new2),allow_=TRUE)
+          # names(new2) <- make.names(names(new2),allow_=TRUE)
           mt_track_id(new2) <- make.names(mt_track_id(new2),allow_=TRUE)
       }
     }
